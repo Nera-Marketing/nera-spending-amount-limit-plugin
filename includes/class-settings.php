@@ -37,6 +37,21 @@ class Nera_SL_Settings {
 	}
 
 	/**
+	 * Whether the full set of limit types is available.
+	 *
+	 * Controlled by the optional `NERA_SPEND_LIMIT_ALL_TYPES` constant (define it in
+	 * wp-config.php). When false (the default), the feature is restricted to the
+	 * Monthly type only: the "Limit Types" field offers nothing but Monthly, the
+	 * "Default Limit Type" field is hidden, and the frontend forces Monthly.
+	 *
+	 * @return bool
+	 */
+	public static function all_types_enabled() {
+		$enabled = defined( 'NERA_SPEND_LIMIT_ALL_TYPES' ) ? (bool) NERA_SPEND_LIMIT_ALL_TYPES : false;
+		return (bool) apply_filters( 'nera_sl_all_types_enabled', $enabled );
+	}
+
+	/**
 	 * Custom sub-types.
 	 *
 	 * @return array<string,string>
@@ -101,104 +116,119 @@ class Nera_SL_Settings {
 			return;
 		}
 
+		$all_types = self::all_types_enabled();
+
+		// When the feature is restricted to Monthly only, the "Limit Types" field
+		// offers nothing but Monthly and the "Default Limit Type" field is hidden.
 		$type_choices = array();
 		foreach ( self::all_types() as $slug => $label ) {
+			if ( ! $all_types && self::DEFAULT_TYPE !== $slug ) {
+				continue;
+			}
 			$type_choices[ $slug ] = $label;
 		}
+
+		$fields = array(
+			array(
+				'key'           => 'field_nera_sl_section',
+				'label'         => __( 'Spend Limit', 'nera-spending-limit' ),
+				'name'          => '',
+				'type'          => 'message',
+				'message'       => __( 'Configure the customer spending-limit feature. When enabled, logged-in customers can set their own limit on the Account Details page, and the limit is enforced at checkout.', 'nera-spending-limit' ),
+				'new_lines'     => 'wpautop',
+				'esc_html'      => 0,
+			),
+			array(
+				'key'           => 'field_nera_sl_enabled',
+				'label'         => __( 'Enable Spend Limit', 'nera-spending-limit' ),
+				'name'          => 'nera_sl_enabled',
+				'type'          => 'true_false',
+				'instructions'  => __( 'Master switch. When off, the feature is hidden on the frontend and not enforced.', 'nera-spending-limit' ),
+				'ui'            => 1,
+				'ui_on_text'    => __( 'Yes', 'nera-spending-limit' ),
+				'ui_off_text'   => __( 'No', 'nera-spending-limit' ),
+				'default_value' => 0,
+				'wrapper'       => array( 'width' => '100' ),
+			),
+			array(
+				'key'               => 'field_nera_sl_limit_types',
+				'label'             => __( 'Limit Types', 'nera-spending-limit' ),
+				'name'              => 'nera_sl_limit_types',
+				'type'              => 'select',
+				'instructions'      => __( 'Which limit types customers may choose on the frontend.', 'nera-spending-limit' ),
+				'choices'           => $type_choices,
+				'multiple'          => 1,
+				'ui'                => 1,
+				'allow_null'        => 0,
+				'return_format'     => 'value',
+				'default_value'     => $all_types ? array( 'daily', 'weekly', 'monthly', 'yearly', 'custom' ) : array( self::DEFAULT_TYPE ),
+				'conditional_logic' => array(
+					array(
+						array(
+							'field'    => 'field_nera_sl_enabled',
+							'operator' => '==',
+							'value'    => '1',
+						),
+					),
+				),
+				'wrapper'           => array( 'width' => '50' ),
+			),
+		);
+
+		// The "Default Limit Type" field is only meaningful when more than one type
+		// is available; hide it entirely in the Monthly-only mode.
+		if ( $all_types ) {
+			$fields[] = array(
+				'key'               => 'field_nera_sl_default_type',
+				'label'             => __( 'Default Limit Type', 'nera-spending-limit' ),
+				'name'              => 'nera_sl_default_type',
+				'type'              => 'select',
+				'instructions'      => __( 'Pre-selected type on the frontend. Must be one of the enabled Limit Types.', 'nera-spending-limit' ),
+				'choices'           => $type_choices,
+				'multiple'          => 0,
+				'ui'                => 1,
+				'allow_null'        => 0,
+				'return_format'     => 'value',
+				'default_value'     => self::DEFAULT_TYPE,
+				'conditional_logic' => array(
+					array(
+						array(
+							'field'    => 'field_nera_sl_enabled',
+							'operator' => '==',
+							'value'    => '1',
+						),
+					),
+				),
+				'wrapper'           => array( 'width' => '50' ),
+			);
+		}
+
+		$fields[] = array(
+			'key'               => 'field_nera_sl_over_limit_message',
+			'label'             => __( 'Over-limit Confirmation Message', 'nera-spending-limit' ),
+			'name'              => 'nera_sl_over_limit_message',
+			'type'              => 'textarea',
+			'instructions'      => __( 'Shown in the confirmation dialog at checkout when an order would exceed the customer\'s spending limit. Available placeholders: {limit}, {spent}, {total}, {over}.', 'nera-spending-limit' ),
+			'default_value'     => self::DEFAULT_OVER_LIMIT_MESSAGE,
+			'rows'              => 3,
+			'new_lines'         => '',
+			'conditional_logic' => array(
+				array(
+					array(
+						'field'    => 'field_nera_sl_enabled',
+						'operator' => '==',
+						'value'    => '1',
+					),
+				),
+			),
+			'wrapper'           => array( 'width' => '100' ),
+		);
 
 		acf_add_local_field_group(
 			array(
 				'key'      => self::FIELD_GROUP_KEY,
 				'title'    => __( 'Spend Limit', 'nera-spending-limit' ),
-				'fields'   => array(
-					array(
-						'key'           => 'field_nera_sl_section',
-						'label'         => __( 'Spend Limit', 'nera-spending-limit' ),
-						'name'          => '',
-						'type'          => 'message',
-						'message'       => __( 'Configure the customer spending-limit feature. When enabled, logged-in customers can set their own limit on the Account Details page, and the limit is enforced at checkout.', 'nera-spending-limit' ),
-						'new_lines'     => 'wpautop',
-						'esc_html'      => 0,
-					),
-					array(
-						'key'           => 'field_nera_sl_enabled',
-						'label'         => __( 'Enable Spend Limit', 'nera-spending-limit' ),
-						'name'          => 'nera_sl_enabled',
-						'type'          => 'true_false',
-						'instructions'  => __( 'Master switch. When off, the feature is hidden on the frontend and not enforced.', 'nera-spending-limit' ),
-						'ui'            => 1,
-						'ui_on_text'    => __( 'Yes', 'nera-spending-limit' ),
-						'ui_off_text'   => __( 'No', 'nera-spending-limit' ),
-						'default_value' => 0,
-						'wrapper'       => array( 'width' => '100' ),
-					),
-					array(
-						'key'               => 'field_nera_sl_limit_types',
-						'label'             => __( 'Limit Types', 'nera-spending-limit' ),
-						'name'              => 'nera_sl_limit_types',
-						'type'              => 'select',
-						'instructions'      => __( 'Which limit types customers may choose on the frontend.', 'nera-spending-limit' ),
-						'choices'           => $type_choices,
-						'multiple'          => 1,
-						'ui'                => 1,
-						'allow_null'        => 0,
-						'return_format'     => 'value',
-						'default_value'     => array( 'daily', 'weekly', 'monthly', 'yearly', 'custom' ),
-						'conditional_logic' => array(
-							array(
-								array(
-									'field'    => 'field_nera_sl_enabled',
-									'operator' => '==',
-									'value'    => '1',
-								),
-							),
-						),
-						'wrapper'           => array( 'width' => '50' ),
-					),
-					array(
-						'key'               => 'field_nera_sl_default_type',
-						'label'             => __( 'Default Limit Type', 'nera-spending-limit' ),
-						'name'              => 'nera_sl_default_type',
-						'type'              => 'select',
-						'instructions'      => __( 'Pre-selected type on the frontend. Must be one of the enabled Limit Types.', 'nera-spending-limit' ),
-						'choices'           => $type_choices,
-						'multiple'          => 0,
-						'ui'                => 1,
-						'allow_null'        => 0,
-						'return_format'     => 'value',
-						'default_value'     => self::DEFAULT_TYPE,
-						'conditional_logic' => array(
-							array(
-								array(
-									'field'    => 'field_nera_sl_enabled',
-									'operator' => '==',
-									'value'    => '1',
-								),
-							),
-						),
-						'wrapper'           => array( 'width' => '50' ),
-					),
-					array(
-						'key'               => 'field_nera_sl_over_limit_message',
-						'label'             => __( 'Over-limit Confirmation Message', 'nera-spending-limit' ),
-						'name'              => 'nera_sl_over_limit_message',
-						'type'              => 'textarea',
-						'instructions'      => __( 'Shown in the confirmation dialog at checkout when an order would exceed the customer\'s spending limit. Available placeholders: {limit}, {spent}, {total}, {over}.', 'nera-spending-limit' ),
-						'default_value'     => self::DEFAULT_OVER_LIMIT_MESSAGE,
-						'rows'              => 3,
-						'new_lines'         => '',
-						'conditional_logic' => array(
-							array(
-								array(
-									'field'    => 'field_nera_sl_enabled',
-									'operator' => '==',
-									'value'    => '1',
-								),
-							),
-						),
-						'wrapper'           => array( 'width' => '100' ),
-					),
-				),
+				'fields'   => $fields,
 				'location' => array(
 					array(
 						array(
@@ -256,6 +286,11 @@ class Nera_SL_Settings {
 	 * @return string[]
 	 */
 	public static function enabled_types() {
+		// Monthly-only mode: ignore any stored selection and force Monthly.
+		if ( ! self::all_types_enabled() ) {
+			return array( self::DEFAULT_TYPE );
+		}
+
 		$raw   = self::get( 'nera_sl_limit_types', array_keys( self::all_types() ) );
 		$raw   = is_array( $raw ) ? $raw : array( $raw );
 		$valid = array_values( array_intersect( array_keys( self::all_types() ), $raw ) );

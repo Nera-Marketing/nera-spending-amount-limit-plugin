@@ -37,24 +37,18 @@ class Nera_SL_Account {
 		<div class="nera-sl" id="nera-sl-root">
 			<div class="bg-surface rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
 
-				<!-- Header -->
-				<div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
-					<div class="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-lg flex items-center justify-center">
-						<span class="material-symbols-outlined text-white text-xl">savings</span>
+				<!-- Header (with the enable switch docked to the right) -->
+				<div class="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-200">
+					<div class="flex items-center gap-3 min-w-0">
+						<div class="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-lg flex items-center justify-center shrink-0">
+							<span class="material-symbols-outlined text-white text-xl">savings</span>
+						</div>
+						<div class="min-w-0">
+							<h3 class="text-xl font-bold text-gray-900"><?php esc_html_e( 'Spending limit', 'nera-spending-limit' ); ?></h3>
+							<p class="text-sm text-gray-600"><?php esc_html_e( 'Set a voluntary cap on how much you spend.', 'nera-spending-limit' ); ?></p>
+						</div>
 					</div>
-					<div>
-						<h3 class="text-xl font-bold text-gray-900"><?php esc_html_e( 'Spending limit', 'nera-spending-limit' ); ?></h3>
-						<p class="text-sm text-gray-600"><?php esc_html_e( 'Set a voluntary cap on how much you spend.', 'nera-spending-limit' ); ?></p>
-					</div>
-				</div>
-
-				<!-- Enable toggle -->
-				<div class="flex items-center justify-between gap-4 mb-6 p-4 rounded-xl border border-gray-200 bg-gray-50/60">
-					<div class="min-w-0">
-						<p class="text-sm font-semibold text-gray-800"><?php esc_html_e( 'Enable spending limit', 'nera-spending-limit' ); ?></p>
-						<p class="text-xs text-gray-500"><?php esc_html_e( 'Turn this off to remove your spending limit. Your settings are kept for next time.', 'nera-spending-limit' ); ?></p>
-					</div>
-					<label class="nera-sl-switch" for="nera-sl-enabled-toggle">
+					<label class="nera-sl-switch shrink-0" for="nera-sl-enabled-toggle">
 						<input type="checkbox" id="nera-sl-enabled-toggle" <?php checked( ! empty( $config['enabled'] ) ); ?> />
 						<span class="nera-sl-switch-track"><span class="nera-sl-switch-thumb"></span></span>
 					</label>
