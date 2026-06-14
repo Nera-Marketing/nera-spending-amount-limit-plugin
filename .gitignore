@@ -1,4 +1,5 @@
 /node_modules/
+/nera-spending-amount-limit-plugin-*.zip
 /nera-spending-limit-*.zip
 .DS_Store
 *.bak

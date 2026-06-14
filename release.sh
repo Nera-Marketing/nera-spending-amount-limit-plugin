@@ -3,7 +3,7 @@
 # release.sh — Build & release nera-spending-limit to its GitHub repo.
 #
 # Usage:
-#   ./release.sh          # reads version from nera-spending-limit.php (Version header)
+#   ./release.sh          # reads version from nera-spending-amount-limit-plugin.php (Version header)
 #   ./release.sh 1.1.0    # override version (optional leading v: v1.1.0)
 #
 # Requirements: git, grep, sed, php + build-wp-release-zip.php (or zip), gh (optional).
@@ -23,7 +23,7 @@
 set -e
 
 PLUGIN_DIR="$(cd "$(dirname "$0")" && pwd)"
-PLUGIN_SLUG="nera-spending-limit"
+PLUGIN_SLUG="nera-spending-amount-limit-plugin"
 GITHUB_REPO="Nera-Marketing/nera-spending-amount-limit-plugin"
 GITHUB_REMOTE="git@github.com:${GITHUB_REPO}.git"
 
