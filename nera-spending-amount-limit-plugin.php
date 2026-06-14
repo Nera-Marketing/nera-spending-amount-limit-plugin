@@ -3,7 +3,7 @@
  * Plugin Name: Nera – Spending Limit
  * Plugin URI: https://github.com/Nera-Marketing/nera-spending-amount-limit-plugin
  * Description: Lets logged-in customers set a voluntary spending limit (daily/weekly/monthly/yearly/custom). Admins enable and configure the feature under Theme Settings → Nera Features. The limit is surfaced and enforced at checkout, with TeraWallet awareness.
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: Nera
  * Text Domain: nera-spending-limit
  * Requires at least: 6.0
@@ -18,7 +18,7 @@ use YahnisElsts\PluginUpdateChecker\v5p5\Vcs\GitHubApi;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'NERA_SL_VERSION', '1.0.5' );
+define( 'NERA_SL_VERSION', '1.0.6' );
 define( 'NERA_SL_PLUGIN_FILE', __FILE__ );
 define( 'NERA_SL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NERA_SL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -76,6 +76,22 @@ if ( ! defined( 'NERA_SL_DISABLE_GITHUB_UPDATES' ) || ! NERA_SL_DISABLE_GITHUB_U
 		if ( defined( 'NERA_SL_GITHUB_TOKEN' ) && is_string( NERA_SL_GITHUB_TOKEN ) && NERA_SL_GITHUB_TOKEN !== '' ) {
 			$nera_sl_update_checker->setAuthentication( NERA_SL_GITHUB_TOKEN );
 		}
+
+		// GitHub-hosted updates carry no plugin icon, so the Dashboard → Updates and
+		// Plugins screens show a blank logo. Inject the bundled logo.png as the icon.
+		$nera_sl_update_checker->addResultFilter(
+			static function ( $plugin_info ) {
+				if ( is_object( $plugin_info ) && is_readable( NERA_SL_PLUGIN_DIR . 'logo.png' ) ) {
+					$logo                = NERA_SL_PLUGIN_URL . 'logo.png';
+					$plugin_info->icons = array(
+						'1x'      => $logo,
+						'2x'      => $logo,
+						'default' => $logo,
+					);
+				}
+				return $plugin_info;
+			}
+		);
 
 		$nera_sl_puc_vcs = $nera_sl_update_checker->getVcsApi();
 		if ( $nera_sl_puc_vcs instanceof GitHubApi ) {
