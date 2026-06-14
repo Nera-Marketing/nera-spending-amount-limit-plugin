@@ -1,9 +1,9 @@
 {
 	"name": "Nera – Spending Limit",
 	"slug": "nera-spending-amount-limit-plugin",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"homepage": "https://github.com/Nera-Marketing/nera-spending-amount-limit-plugin",
-	"download_url": "https://github.com/Nera-Marketing/nera-spending-amount-limit-plugin/releases/download/v1.0.4/nera-spending-amount-limit-plugin-1.0.4.zip",
+	"download_url": "https://github.com/Nera-Marketing/nera-spending-amount-limit-plugin/releases/download/v1.0.5/nera-spending-amount-limit-plugin-1.0.5.zip",
 
 	"author": "Nera",
 	"author_homepage": "https://github.com/Nera-Marketing",
@@ -11,9 +11,9 @@
 	"requires": "6.0",
 	"tested": "6.8",
 	"requires_php": "7.4",
-	"last_updated": "2026-06-14 16:22:00",
+	"last_updated": "2026-06-14 16:31:00",
 
-	"upgrade_notice": "Limit types now default to Monthly only; opt in to all types via the NERA_SPEND_LIMIT_ALL_TYPES constant.",
+	"upgrade_notice": "Defines a default for the NERA_SPEND_LIMIT_ALL_TYPES constant so the Monthly-only behaviour is explicit.",
 
 	"sections": {
 		"description": "<p>Per-customer voluntary spending limits for WooCommerce (daily/weekly/monthly/yearly/custom), with TeraWallet awareness. Admins enable and configure the feature under <strong>Theme Settings → Nera Features → Spend Limit</strong>; customers set their own limit on the Account Details page; the limit is surfaced and enforced at checkout.</p>",

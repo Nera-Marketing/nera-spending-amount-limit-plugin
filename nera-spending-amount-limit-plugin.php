@@ -3,7 +3,7 @@
  * Plugin Name: Nera – Spending Limit
  * Plugin URI: https://github.com/Nera-Marketing/nera-spending-amount-limit-plugin
  * Description: Lets logged-in customers set a voluntary spending limit (daily/weekly/monthly/yearly/custom). Admins enable and configure the feature under Theme Settings → Nera Features. The limit is surfaced and enforced at checkout, with TeraWallet awareness.
- * Version: 1.0.4
+ * Version: 1.0.5
  * Author: Nera
  * Text Domain: nera-spending-limit
  * Requires at least: 6.0
@@ -18,7 +18,7 @@ use YahnisElsts\PluginUpdateChecker\v5p5\Vcs\GitHubApi;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'NERA_SL_VERSION', '1.0.4' );
+define( 'NERA_SL_VERSION', '1.0.5' );
 define( 'NERA_SL_PLUGIN_FILE', __FILE__ );
 define( 'NERA_SL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NERA_SL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -35,6 +35,9 @@ define( 'NERA_SL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
  *
  * Programmatic override: add_filter( 'nera_sl_all_types_enabled', '__return_true' );
  */
+if ( ! defined( 'NERA_SPEND_LIMIT_ALL_TYPES' ) ) {
+	define( 'NERA_SPEND_LIMIT_ALL_TYPES', false );
+}
 
 /**
  * GitHub updates (Plugin Update Checker v5.5). On by default when `lib/plugin-update-checker/load-v5p5.php` exists.
