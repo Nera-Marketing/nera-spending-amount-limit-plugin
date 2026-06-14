@@ -7,7 +7,7 @@
 #   ./release.sh 1.1.0    # override version (optional leading v: v1.1.0)
 #
 # Requirements: git, grep, sed, php + build-wp-release-zip.php (or zip), gh (optional).
-# Pushes to `origin` (configure it once: git remote add origin git@github.com:Nera-Marketing/nera-spending-limit.git).
+# Pushes to `origin` (configure it once: git remote add origin git@github.com:Nera-Marketing/nera-spending-amount-limit-plugin.git).
 #
 # Cross-platform: Linux, macOS, Windows Git Bash (MSYS). Push branch: default main; override with
 # RELEASE_GIT_BRANCH=master if needed.
@@ -24,7 +24,7 @@ set -e
 
 PLUGIN_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_SLUG="nera-spending-limit"
-GITHUB_REPO="Nera-Marketing/nera-spending-limit"
+GITHUB_REPO="Nera-Marketing/nera-spending-amount-limit-plugin"
 GITHUB_REMOTE="git@github.com:${GITHUB_REPO}.git"
 
 PID="$$"
