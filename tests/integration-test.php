@@ -71,11 +71,9 @@ echo "== Settings fallbacks ==\n";
 check( 'is_enabled() false (no field)', $S::is_enabled(), false );
 check( 'enabled_types count = 5', count( $S::enabled_types() ), 5 );
 check( 'default_type = monthly', $S::default_type(), 'monthly' );
-check( 'max_limit = 10000', (int) $S::max_limit(), 10000 );
 
 echo "\n== Wallet (inactive) ==\n";
 check( 'wallet inactive', $W::is_active(), false );
-check( 'slider_max falls back to CMS max', (int) $W::slider_max( 7 ), 10000 );
 
 echo "\n== sanitize_input (enabled path) ==\n";
 $ok = $L::sanitize_input( array( 'enabled' => '1', 'amount' => '250', 'type' => 'monthly' ) );
@@ -83,8 +81,9 @@ check( 'valid monthly ok', ! empty( $ok['ok'] ), true );
 check( 'valid monthly enabled', $ok['config']['enabled'], true );
 check( 'valid monthly amount', $ok['config']['amount'], 250.0 );
 
-$clamp = $L::sanitize_input( array( 'enabled' => '1', 'amount' => '999999', 'type' => 'daily' ) );
-check( 'amount clamped to max', $clamp['config']['amount'], 10000.0 );
+// No upper cap any more: a large amount is accepted as-is.
+$big = $L::sanitize_input( array( 'enabled' => '1', 'amount' => '999999', 'type' => 'daily' ) );
+check( 'large amount accepted (no cap)', $big['config']['amount'], 999999.0 );
 
 $badtype = $L::sanitize_input( array( 'enabled' => '1', 'amount' => '50', 'type' => 'fortnightly' ) );
 check( 'bad type rejected (enabled)', empty( $badtype['ok'] ), true );

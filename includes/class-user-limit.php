@@ -335,17 +335,14 @@ class Nera_SL_User_Limit {
 		$enabled = ! empty( $input['enabled'] ) && '0' !== (string) $input['enabled'];
 
 		$enabled_types = Nera_SL_Settings::enabled_types();
-		$max           = Nera_SL_Settings::max_limit();
 
 		// Parse the provided values best-effort (kept even when disabled, so the
 		// form round-trips and toggling back on restores the customer's choices).
+		// The amount is a free numeric entry with no upper cap (voluntary limit).
 		$type   = isset( $input['type'] ) ? (string) $input['type'] : '';
 		$amount = isset( $input['amount'] ) ? (float) $input['amount'] : 0.0;
 		if ( $amount < 0 ) {
 			$amount = 0.0;
-		}
-		if ( $amount > $max ) {
-			$amount = $max; // Clamp to the configured maximum.
 		}
 
 		$sub     = isset( $input['custom_subtype'] ) ? (string) $input['custom_subtype'] : '';

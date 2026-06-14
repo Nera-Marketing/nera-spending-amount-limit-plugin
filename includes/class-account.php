@@ -73,18 +73,17 @@ class Nera_SL_Account {
 						<label for="nera-sl-amount" class="block text-sm font-semibold text-gray-700 mb-2">
 							<?php esc_html_e( 'Amount limit', 'nera-spending-limit' ); ?>
 						</label>
-						<div class="nera-sl-amount">
-							<input type="range" id="nera-sl-amount-range" min="1" step="1"
-								value="<?php echo esc_attr( $config['amount'] > 0 ? $config['amount'] : 1 ); ?>"
-								class="nera-sl-range" />
-							<div class="nera-sl-amount-box">
-								<span class="nera-sl-amount-prefix" aria-hidden="true"><?php echo esc_html( self::currency_symbol() ); ?></span>
-								<input type="number" id="nera-sl-amount" min="1" step="1"
-									value="<?php echo esc_attr( $config['amount'] > 0 ? $config['amount'] : 1 ); ?>"
-									class="nera-sl-amount-input" />
-							</div>
+						<div class="nera-sl-amount-box">
+							<span class="nera-sl-amount-prefix" aria-hidden="true"><?php echo esc_html( self::currency_symbol() ); ?></span>
+							<input type="text" inputmode="decimal" id="nera-sl-amount" name="nera_sl_amount"
+								autocomplete="off"
+								value="<?php echo esc_attr( $config['amount'] > 0 ? $config['amount'] : '' ); ?>"
+								placeholder="0"
+								class="nera-sl-amount-input" />
 						</div>
-						<p class="text-xs text-gray-500 mt-2 nera-sl-max-hint"></p>
+						<p class="text-xs text-gray-500 mt-2">
+							<?php esc_html_e( 'Enter the maximum amount you want to spend in the selected period.', 'nera-spending-limit' ); ?>
+						</p>
 					</div>
 
 					<!-- Type -->

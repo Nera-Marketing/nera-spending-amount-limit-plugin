@@ -17,8 +17,7 @@ class Nera_SL_Settings {
 	const OPTIONS_POST_ID = 'nera-features'; // ACF "post_id" for get_field() on this options page.
 	const FIELD_GROUP_KEY = 'group_nera_sl_spend_limit';
 
-	const DEFAULT_MAX_LIMIT = 10000;
-	const DEFAULT_TYPE      = 'monthly';
+	const DEFAULT_TYPE = 'monthly';
 
 	const DEFAULT_OVER_LIMIT_MESSAGE = 'This order will take you over the spending limit you set. Do you want to continue anyway?';
 
@@ -180,26 +179,6 @@ class Nera_SL_Settings {
 						'wrapper'           => array( 'width' => '50' ),
 					),
 					array(
-						'key'               => 'field_nera_sl_max_limit',
-						'label'             => __( 'Max Limit Amount', 'nera-spending-limit' ),
-						'name'              => 'nera_sl_max_limit',
-						'type'              => 'number',
-						'instructions'      => __( 'Maximum value customers can set. Also used as the slider maximum when no wallet plugin is active.', 'nera-spending-limit' ),
-						'default_value'     => self::DEFAULT_MAX_LIMIT,
-						'min'               => 1,
-						'step'              => 1,
-						'conditional_logic' => array(
-							array(
-								array(
-									'field'    => 'field_nera_sl_enabled',
-									'operator' => '==',
-									'value'    => '1',
-								),
-							),
-						),
-						'wrapper'           => array( 'width' => '50' ),
-					),
-					array(
 						'key'               => 'field_nera_sl_over_limit_message',
 						'label'             => __( 'Over-limit Confirmation Message', 'nera-spending-limit' ),
 						'name'              => 'nera_sl_over_limit_message',
@@ -298,19 +277,6 @@ class Nera_SL_Settings {
 			$default = $enabled[0];
 		}
 		return $default;
-	}
-
-	/**
-	 * Max limit amount (CMS), used as the slider max when no wallet.
-	 *
-	 * @return float
-	 */
-	public static function max_limit() {
-		$max = (float) self::get( 'nera_sl_max_limit', self::DEFAULT_MAX_LIMIT );
-		if ( $max < 1 ) {
-			$max = self::DEFAULT_MAX_LIMIT;
-		}
-		return $max;
 	}
 
 	/**

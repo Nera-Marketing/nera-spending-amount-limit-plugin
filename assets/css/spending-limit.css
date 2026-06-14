@@ -45,58 +45,17 @@
 	box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3);
 }
 
-/* ---- Amount slider ---- */
-.nera-sl-range {
-	-webkit-appearance: none;
-	appearance: none;
-	height: 8px;
-	border-radius: 9999px;
-	background: #e5e7eb;
-	outline: none;
-	cursor: pointer;
-}
-.nera-sl-range::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	appearance: none;
-	width: 22px;
-	height: 22px;
-	border-radius: 9999px;
-	background: var(--color-primary, #6d28d9);
-	border: 3px solid #fff;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-	cursor: pointer;
-}
-.nera-sl-range::-moz-range-thumb {
-	width: 22px;
-	height: 22px;
-	border-radius: 9999px;
-	background: var(--color-primary, #6d28d9);
-	border: 3px solid #fff;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-	cursor: pointer;
-}
-.nera-sl-range:focus-visible {
-	box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.18);
-}
-
-/* ---- Amount control (range + prefixed number box) ---- */
-.nera-sl-amount {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-	flex-wrap: wrap;
-}
-.nera-sl-amount .nera-sl-range {
-	flex: 1 1 12rem;
-}
+/* ---- Amount text field (currency prefix + free numeric entry) ---- */
 .nera-sl-amount-box {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.25rem;
+	gap: 0.4rem;
+	width: 100%;
+	max-width: 22rem;
 	background: #fff;
 	border: 2px solid #e5e7eb;
 	border-radius: 0.75rem;
-	padding: 0.45rem 0.85rem;
+	padding: 0.7rem 1rem;
 	transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .nera-sl-amount-box:focus-within {
@@ -106,10 +65,13 @@
 .nera-sl-amount-prefix {
 	font-weight: 700;
 	color: #6b7280;
-	font-size: 0.95rem;
+	font-size: 1.05rem;
+	flex-shrink: 0;
 }
 .nera-sl-amount-input {
-	width: 5.5rem;
+	flex: 1 1 auto;
+	width: 100%;
+	min-width: 0;
 	border: 0;
 	outline: 0;
 	padding: 0;
@@ -117,12 +79,6 @@
 	font-weight: 700;
 	color: #111827;
 	background: transparent;
-	-moz-appearance: textfield;
-}
-.nera-sl-amount-input::-webkit-outer-spin-button,
-.nera-sl-amount-input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
 }
 
 /* ---- Refined select (Limit type / Custom period) ---- */

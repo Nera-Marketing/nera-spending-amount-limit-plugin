@@ -34,22 +34,4 @@ class Nera_SL_Wallet {
 		}
 		return (float) woo_wallet()->wallet->get_wallet_balance( $user_id, 'edit' );
 	}
-
-	/**
-	 * Maximum value for the frontend amount slider.
-	 *
-	 * Per spec: when a wallet plugin is active, use the user's wallet balance;
-	 * otherwise fall back to the CMS "Max Limit Amount". The result is always at
-	 * least 1 so the slider remains usable.
-	 *
-	 * @param int $user_id User ID.
-	 * @return float
-	 */
-	public static function slider_max( $user_id ) {
-		if ( self::is_active() ) {
-			$balance = self::get_balance( $user_id );
-			return max( 1.0, (float) $balance );
-		}
-		return max( 1.0, Nera_SL_Settings::max_limit() );
-	}
 }

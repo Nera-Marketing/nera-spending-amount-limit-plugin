@@ -104,8 +104,6 @@ class Nera_SL_Assets {
 				'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
 				'saveAction'     => 'nera_sl_save',
 				'nonce'          => wp_create_nonce( 'nera_sl_save' ),
-				'sliderMax'      => Nera_SL_Wallet::slider_max( $user_id ),
-				'walletActive'   => Nera_SL_Wallet::is_active(),
 				'currency'       => self::currency_symbol(),
 				'defaultType'    => Nera_SL_Settings::default_type(),
 				'enabledTypes'   => $types,

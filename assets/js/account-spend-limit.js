@@ -21,9 +21,7 @@
 	// ---- Elements ----
 	var elToggle = document.getElementById('nera-sl-enabled-toggle');
 	var elFields = root.querySelector('.nera-sl-fields');
-	var elRange = document.getElementById('nera-sl-amount-range');
 	var elNumber = document.getElementById('nera-sl-amount');
-	var elMaxHint = root.querySelector('.nera-sl-max-hint');
 	var elType = document.getElementById('nera-sl-type');
 	var elSubtypeWrap = root.querySelector('.nera-sl-custom-subtype');
 	var elSubtype = document.getElementById('nera-sl-subtype');
@@ -38,7 +36,6 @@
 
 	// ---- State ----
 	var startCfg = cfg.config || {};
-	var max = Math.max(1, Math.floor(parseFloat(cfg.sliderMax) || 1));
 	var periods = new Set(
 		startCfg.type === 'custom' && Array.isArray(startCfg.custom_periods)
 			? startCfg.custom_periods
@@ -62,13 +59,6 @@
 	}
 	function monthToken(y, m) {
 		return y + '-' + pad(m + 1);
-	}
-	function fmtMoney(n) {
-		var num = (parseFloat(n) || 0).toLocaleString(undefined, {
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 2,
-		});
-		return (cfg.currency || '') + num;
 	}
 	function show(el, visible) {
 		if (el) {
@@ -150,38 +140,24 @@
 		});
 	}
 
-	// ---- Amount slider ----
-	function clampAmount(v) {
-		v = Math.floor(parseFloat(v) || 1);
-		if (v < 1) {
-			v = 1;
-		}
-		if (v > max) {
-			v = max;
-		}
-		return v;
-	}
-	function syncAmount(source) {
-		var v = clampAmount(source.value);
-		elRange.value = v;
-		elNumber.value = v;
+	// ---- Amount (free numeric text field, no upper cap) ----
+	// Returns the entered amount as a number, or 0 when blank/invalid. The server
+	// enforces the "at least 1" rule on save.
+	function readAmount() {
+		var v = parseFloat(String(elNumber.value).replace(/[^0-9.]/g, ''));
+		return isNaN(v) || v < 0 ? 0 : v;
 	}
 	function initAmount() {
-		elRange.max = max;
-		elNumber.max = max;
-		var start = clampAmount(startCfg.amount && startCfg.amount > 0 ? startCfg.amount : 1);
-		elRange.value = start;
-		elNumber.value = start;
-		if (elMaxHint) {
-			elMaxHint.textContent = cfg.walletActive
-				? 'Maximum (your wallet balance): ' + fmtMoney(max)
-				: 'Maximum: ' + fmtMoney(max);
-		}
-		elRange.addEventListener('input', function () {
-			syncAmount(elRange);
-		});
-		elNumber.addEventListener('change', function () {
-			syncAmount(elNumber);
+		// Keep only digits and a single decimal point as the customer types.
+		elNumber.addEventListener('input', function () {
+			var cleaned = elNumber.value.replace(/[^0-9.]/g, '');
+			var parts = cleaned.split('.');
+			if (parts.length > 2) {
+				cleaned = parts.shift() + '.' + parts.join('');
+			}
+			if (elNumber.value !== cleaned) {
+				elNumber.value = cleaned;
+			}
 		});
 	}
 
@@ -427,7 +403,7 @@
 		body.append('action', cfg.saveAction);
 		body.append('nonce', cfg.nonce);
 		body.append('enabled', elToggle && elToggle.checked ? '1' : '0');
-		body.append('amount', String(clampAmount(elNumber.value)));
+		body.append('amount', String(readAmount()));
 		body.append('type', elType.value);
 		if (elType.value === 'custom') {
 			body.append('custom_subtype', subtype());
