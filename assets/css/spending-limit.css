@@ -1,0 +1,542 @@
+/**
+ * Nera Spending Limit — frontend styles.
+ * Uses self-namespaced classes (nera-sl-*) so it is independent of the theme's
+ * Tailwind build. Colour values intentionally echo the theme palette.
+ */
+
+/* ---- Enable switch ---- */
+.nera-sl-switch {
+	position: relative;
+	display: inline-flex;
+	flex-shrink: 0;
+	cursor: pointer;
+}
+.nera-sl-switch input {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+.nera-sl-switch-track {
+	display: inline-block;
+	width: 3.25rem;
+	height: 1.75rem;
+	border-radius: 9999px;
+	background: #d1d5db;
+	transition: background 0.2s ease;
+}
+.nera-sl-switch-thumb {
+	display: block;
+	width: 1.35rem;
+	height: 1.35rem;
+	margin: 0.2rem;
+	border-radius: 9999px;
+	background: #fff;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	transition: transform 0.2s ease;
+}
+.nera-sl-switch input:checked + .nera-sl-switch-track {
+	background: var(--color-primary, #6d28d9);
+}
+.nera-sl-switch input:checked + .nera-sl-switch-track .nera-sl-switch-thumb {
+	transform: translateX(1.5rem);
+}
+.nera-sl-switch input:focus-visible + .nera-sl-switch-track {
+	box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3);
+}
+
+/* ---- Amount slider ---- */
+.nera-sl-range {
+	-webkit-appearance: none;
+	appearance: none;
+	height: 8px;
+	border-radius: 9999px;
+	background: #e5e7eb;
+	outline: none;
+	cursor: pointer;
+}
+.nera-sl-range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 22px;
+	height: 22px;
+	border-radius: 9999px;
+	background: var(--color-primary, #6d28d9);
+	border: 3px solid #fff;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+	cursor: pointer;
+}
+.nera-sl-range::-moz-range-thumb {
+	width: 22px;
+	height: 22px;
+	border-radius: 9999px;
+	background: var(--color-primary, #6d28d9);
+	border: 3px solid #fff;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+	cursor: pointer;
+}
+.nera-sl-range:focus-visible {
+	box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.18);
+}
+
+/* ---- Amount control (range + prefixed number box) ---- */
+.nera-sl-amount {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+.nera-sl-amount .nera-sl-range {
+	flex: 1 1 12rem;
+}
+.nera-sl-amount-box {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	background: #fff;
+	border: 2px solid #e5e7eb;
+	border-radius: 0.75rem;
+	padding: 0.45rem 0.85rem;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.nera-sl-amount-box:focus-within {
+	border-color: var(--color-primary, #6d28d9);
+	box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.12);
+}
+.nera-sl-amount-prefix {
+	font-weight: 700;
+	color: #6b7280;
+	font-size: 0.95rem;
+}
+.nera-sl-amount-input {
+	width: 5.5rem;
+	border: 0;
+	outline: 0;
+	padding: 0;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: #111827;
+	background: transparent;
+	-moz-appearance: textfield;
+}
+.nera-sl-amount-input::-webkit-outer-spin-button,
+.nera-sl-amount-input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* ---- Refined select (Limit type / Custom period) ---- */
+.nera-sl-select-wrap {
+	position: relative;
+	display: block;
+	max-width: 22rem;
+}
+.nera-sl-select-icon {
+	position: absolute;
+	left: 0.85rem;
+	top: 50%;
+	transform: translateY(-50%);
+	color: var(--color-primary, #6d28d9);
+	font-size: 1.25rem;
+	pointer-events: none;
+}
+.nera-sl-select-wrap::after {
+	content: '';
+	position: absolute;
+	right: 1rem;
+	top: 50%;
+	width: 0.62rem;
+	height: 0.62rem;
+	border-right: 2px solid #6b7280;
+	border-bottom: 2px solid #6b7280;
+	transform: translateY(-65%) rotate(45deg);
+	pointer-events: none;
+	transition: border-color 0.15s ease;
+}
+.nera-sl-select-wrap:focus-within::after {
+	border-color: var(--color-primary, #6d28d9);
+}
+.nera-sl-select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	width: 100%;
+	padding: 0.8rem 2.5rem 0.8rem 2.75rem;
+	border: 2px solid #e5e7eb;
+	border-radius: 0.75rem;
+	background: #fff;
+	color: #111827;
+	font-size: 0.95rem;
+	font-weight: 600;
+	line-height: 1.2;
+	cursor: pointer;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.nera-sl-select:hover {
+	border-color: #d1d5db;
+}
+.nera-sl-select:focus {
+	outline: 0;
+	border-color: var(--color-primary, #6d28d9);
+	box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.12);
+}
+
+/* ---- Calendar ---- */
+.nera-sl-calendar {
+	max-width: 22rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 1rem;
+	padding: 1rem;
+	background: #fff;
+	background-image: radial-gradient(rgba(109, 40, 217, 0.05) 1px, transparent 1px);
+	background-size: 16px 16px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -16px rgba(76, 29, 149, 0.25);
+	user-select: none;
+}
+.nera-sl-cal-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 0.5rem;
+}
+.nera-sl-cal-title {
+	font-weight: 700;
+	color: #111827;
+	font-size: 0.95rem;
+}
+.nera-sl-cal-nav {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 0.5rem;
+	border: 1px solid #e5e7eb;
+	background: #fff;
+	cursor: pointer;
+	color: #374151;
+	line-height: 1;
+}
+.nera-sl-cal-nav:hover {
+	border-color: var(--color-primary, #6d28d9);
+	color: var(--color-primary, #6d28d9);
+}
+.nera-sl-cal-grid {
+	display: grid;
+	gap: 4px;
+}
+.nera-sl-cal-grid.is-days {
+	grid-template-columns: repeat(7, 1fr);
+}
+.nera-sl-cal-grid.is-months,
+.nera-sl-cal-grid.is-years {
+	grid-template-columns: repeat(3, 1fr);
+}
+.nera-sl-cal-dow {
+	text-align: center;
+	font-size: 0.7rem;
+	font-weight: 600;
+	color: #9ca3af;
+	padding: 0.25rem 0;
+}
+.nera-sl-cal-cell {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2.25rem;
+	border-radius: 0.6rem;
+	border: 1px solid transparent;
+	background: transparent;
+	color: #374151;
+	cursor: pointer;
+	font-size: 0.85rem;
+	padding: 0.25rem;
+	transition: background-color 0.12s ease, color 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nera-sl-cal-cell:hover:not(.is-empty):not(.is-selected) {
+	background: rgba(109, 40, 217, 0.08);
+	transform: translateY(-1px);
+}
+.nera-sl-cal-cell:active:not(.is-empty) {
+	transform: translateY(0) scale(0.96);
+}
+.nera-sl-cal-cell.is-months .nera-sl-cal-cell,
+.nera-sl-cal-grid.is-months .nera-sl-cal-cell,
+.nera-sl-cal-grid.is-years .nera-sl-cal-cell {
+	min-height: 2.75rem;
+	font-weight: 600;
+}
+.nera-sl-cal-cell:hover:not(.is-empty) {
+	border-color: var(--color-primary, #6d28d9);
+}
+.nera-sl-cal-cell.is-empty {
+	cursor: default;
+}
+.nera-sl-cal-cell.is-selected {
+	background: var(--color-primary, #6d28d9);
+	color: #fff;
+	border-color: var(--color-primary, #6d28d9);
+	font-weight: 700;
+	box-shadow: 0 4px 10px -3px rgba(76, 29, 149, 0.55);
+}
+.nera-sl-cal-cell.is-today {
+	box-shadow: inset 0 0 0 2px rgba(109, 40, 217, 0.35);
+}
+
+/* ---- Selected period chips ---- */
+.nera-sl-chip {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.4rem 1.9rem 0.4rem 0.75rem;
+	border-radius: 9999px;
+	background: rgba(109, 40, 217, 0.08);
+	border: 1px solid rgba(109, 40, 217, 0.2);
+	color: #4c1d95;
+	font-size: 0.8rem;
+	font-weight: 600;
+}
+.nera-sl-chip-remove {
+	position: absolute;
+	top: 50%;
+	right: 0.35rem;
+	transform: translateY(-50%);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.1rem;
+	height: 1.1rem;
+	border-radius: 9999px;
+	background: rgba(220, 38, 38, 0.12);
+	color: #b91c1c;
+	border: none;
+	cursor: pointer;
+	font-size: 0.85rem;
+	line-height: 1;
+}
+.nera-sl-chip-remove:hover {
+	background: #dc2626;
+	color: #fff;
+}
+
+/* ---- Messages ---- */
+.nera-sl-message {
+	border-radius: 0.75rem;
+	padding: 0.75rem 1rem;
+	font-size: 0.85rem;
+	font-weight: 500;
+	opacity: 1;
+	transition: opacity 0.35s ease;
+}
+.nera-sl-message.is-leaving {
+	opacity: 0;
+}
+.nera-sl-message.is-success {
+	background: rgba(16, 185, 129, 0.1);
+	border: 1px solid rgba(16, 185, 129, 0.25);
+	color: #047857;
+}
+.nera-sl-message.is-error {
+	background: rgba(220, 38, 38, 0.08);
+	border: 1px solid rgba(220, 38, 38, 0.25);
+	color: #b91c1c;
+}
+
+.nera-sl-hidden,
+.hidden.nera-sl-hidden {
+	display: none !important;
+}
+
+/* =====================================================================
+ * Confirmation dialog (shared: checkout over-limit + remove period)
+ * Branded, centered, animated. Reset any theme <dialog> rules.
+ * ================================================================== */
+dialog.nera-sl-dialog {
+	/* Robust viewport centering for showModal() across themes. */
+	position: fixed;
+	inset: 0;
+	margin: auto;
+	width: min(30rem, calc(100% - 2rem));
+	max-height: min(90dvh, calc(100% - 2rem));
+	padding: 0;
+	border: 0;
+	background: transparent;
+	overflow: visible;
+	color: #1f2937;
+}
+dialog.nera-sl-dialog:not([open]) {
+	display: none;
+}
+dialog.nera-sl-dialog::backdrop {
+	background: rgba(17, 24, 39, 0.55);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	animation: nera-sl-dialog-fade 0.2s ease-out;
+}
+dialog.nera-sl-dialog[open] {
+	animation: nera-sl-dialog-pop 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes nera-sl-dialog-fade {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+@keyframes nera-sl-dialog-pop {
+	from { opacity: 0; transform: translateY(12px) scale(0.96); }
+	to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.nera-sl-dialog-inner {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	max-height: min(90dvh, calc(100vh - 2rem));
+	overflow: hidden;
+	background: #ffffff;
+	border-radius: 1.25rem;
+	box-shadow: 0 30px 60px -15px rgba(17, 24, 39, 0.45);
+	/* Subtle top sheen so it reads as a crafted surface, not a flat box. */
+	background-image: linear-gradient(180deg, rgba(109, 40, 217, 0.05), transparent 120px);
+}
+
+.nera-sl-dialog-head {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+	padding: 1.5rem 1.5rem 0.5rem;
+}
+.nera-sl-dialog-badge {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 3rem;
+	height: 3rem;
+	flex-shrink: 0;
+	border-radius: 9999px;
+	color: #fff;
+	background: var(--color-primary, #6d28d9);
+}
+.nera-sl-dialog-badge .material-symbols-outlined {
+	font-size: 1.6rem;
+}
+/* Soft pulsing halo around the badge for a moment of delight. */
+.nera-sl-dialog-badge::after {
+	content: '';
+	position: absolute;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 9999px;
+	box-shadow: 0 0 0 0 currentColor;
+	opacity: 0.35;
+	animation: nera-sl-badge-halo 1.8s ease-out infinite;
+}
+.nera-sl-dialog-badge.is-warning {
+	background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+.nera-sl-dialog-badge.is-danger {
+	background: linear-gradient(135deg, #ef4444, #b91c1c);
+}
+@keyframes nera-sl-badge-halo {
+	0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.45); }
+	70% { box-shadow: 0 0 0 14px rgba(245, 158, 11, 0); }
+	100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+.nera-sl-dialog-badge.is-danger::after {
+	animation-name: nera-sl-badge-halo-danger;
+}
+@keyframes nera-sl-badge-halo-danger {
+	0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.45); }
+	70% { box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); }
+	100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+.nera-sl-dialog-title {
+	margin: 0;
+	font-size: 1.2rem;
+	font-weight: 800;
+	letter-spacing: -0.01em;
+	color: #111827;
+	line-height: 1.25;
+}
+
+.nera-sl-dialog-body {
+	padding: 0.5rem 1.5rem 1.25rem;
+	overflow-y: auto;
+}
+.nera-sl-dialog-body p {
+	margin: 0;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: #4b5563;
+}
+
+.nera-sl-dialog-actions {
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 0.6rem;
+	padding: 1rem 1.5rem 1.5rem;
+}
+@media (min-width: 480px) {
+	.nera-sl-dialog-actions {
+		flex-direction: row;
+		justify-content: flex-end;
+	}
+}
+.nera-sl-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4rem;
+	padding: 0.8rem 1.4rem;
+	border-radius: 0.85rem;
+	font-size: 0.95rem;
+	font-weight: 700;
+	cursor: pointer;
+	border: 2px solid transparent;
+	transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.nera-sl-btn:active {
+	transform: translateY(1px) scale(0.99);
+}
+.nera-sl-btn-ghost {
+	background: #fff;
+	border-color: #e5e7eb;
+	color: #374151;
+}
+.nera-sl-btn-ghost:hover {
+	border-color: #d1d5db;
+	background: #f9fafb;
+}
+.nera-sl-btn-primary {
+	background: linear-gradient(135deg, var(--color-primary, #6d28d9), #4c1d95);
+	color: #fff;
+	box-shadow: 0 8px 20px -8px rgba(76, 29, 149, 0.7);
+}
+.nera-sl-btn-primary:hover {
+	box-shadow: 0 12px 26px -8px rgba(76, 29, 149, 0.85);
+	transform: translateY(-1px);
+}
+.nera-sl-btn-danger {
+	background: linear-gradient(135deg, #ef4444, #b91c1c);
+	color: #fff;
+	box-shadow: 0 8px 20px -8px rgba(185, 28, 28, 0.7);
+}
+.nera-sl-btn-danger:hover {
+	box-shadow: 0 12px 26px -8px rgba(185, 28, 28, 0.85);
+	transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	dialog.nera-sl-dialog[open],
+	dialog.nera-sl-dialog::backdrop,
+	.nera-sl-dialog-badge::after {
+		animation: none;
+	}
+}
+
+/* ---- Checkout: disabled place-order ---- */
+#place_order.nera-sl-disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	pointer-events: none;
+}
