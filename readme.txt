@@ -5,7 +5,7 @@ Tested up to: 6.8
 Requires PHP: 7.4
 WC requires at least: 8.0
 WC tested up to: 9.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 
 Voluntary, per-customer spending limits for WooCommerce, with TeraWallet awareness.
@@ -56,6 +56,15 @@ Run the WP-free logic smoke test:
 `php tests/smoke-test.php`
 
 == Changelog ==
+
+= 1.0.1 =
+* Account page: spending-limit section moved to the top of Account Details.
+* Account page: per-user enable/disable switch; removing all custom periods clears the limit.
+* Account page: refined Limit Type / custom-period controls and calendar; "Save" button; status message auto-hides after 5s.
+* Single CMS limit type hides the frontend dropdown and auto-selects that type.
+* Checkout: over-limit always prompts a confirmation (even when the wallet covers it); only hard-blocked when the wallet is active and cannot cover the order.
+* New CMS field: customizable over-limit confirmation message ({limit}/{spent}/{total}/{over} placeholders).
+* Branded, centered confirmation dialogs.
 
 = 1.0.0 =
 * Initial release.
